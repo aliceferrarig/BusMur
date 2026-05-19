@@ -29,15 +29,18 @@ jobs:
       - name: Gerar Build do React (Vite)
         run: npm run build
 
-      - name: Sincronizar Capacitor
+      - name: Forçar Sincronização do Capacitor
         run: |
+          npx cap icon --skip || true
+          npx cap splash --skip || true
           npx cap sync android
 
-      - name: Dar permissão ao Gradle e Build
+      - name: Limpar e Construir APK (Debug)
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew clean assembleDebug
+          ./gradlew clean
+          ./gradlew assembleDebug
 
       - name: Upload do APK final
         uses: actions/upload-artifact@v4
