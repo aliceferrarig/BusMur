@@ -23,10 +23,10 @@ export default function Instalacao() {
           Baixe o aplicativo oficial e acompanhe seu ônibus em tempo real. Chega de esperar no ponto sem saber quando ele vai passar.
         </p>
 
-        {/* Botão de Download Corrigido com caminho relativo e CaseSensitive */}
+        {/* Botão de Download Corrigido com o novo nome */}
         <a 
-          href="./BusMur.apk" 
-          download="BusMur.apk"
+          href="./busmur-app.apk" 
+          download="busmur-app.apk"
           className="bg-[#deff9a] hover:bg-[#cbf575] text-[#121212] font-bold text-lg md:text-xl py-4 px-10 rounded-full shadow-[0_0_20px_rgba(222,255,154,0.3)] transition-all hover:scale-105 flex items-center justify-center gap-3 mx-auto w-full md:w-auto inline-flex"
         >
           <Download size={24} />
