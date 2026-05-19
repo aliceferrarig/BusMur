@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -14,7 +14,7 @@ import Notificacoes from "./pages/Notificacoes";
 import PainelMotorista from "./pages/PainelMotorista";
 import AdminPanel from "./pages/AdminPanel";
 import Configuracoes from "./pages/Configuracoes";
-import Instalacao from "./pages/Instalacao"; // <-- Importação adicionada
+import Instalacao from "./pages/Instalacao";
 
 export default function App() {
   return (
@@ -33,7 +33,7 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/cadastro-usuario" element={<CadastroUsuario />} />
             <Route path="/cadastro-motorista" element={<CadastroMotorista />} />
-            <Route path="/instalar" element={<Instalacao />} /> {/* <-- Rota adicionada */}
+            <Route path="/instalar" element={<Instalacao />} />
 
             {/* Rotas Protegidas */}
             <Route path="/linhas" element={<ProtectedRoute><Linhas /></ProtectedRoute>} />
