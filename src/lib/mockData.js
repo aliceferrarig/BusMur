@@ -1,4 +1,4 @@
-// 🚌 DADOS MOCK — BusMur
+// 🚌 DADOS MOCK — BusMur - Atualizado com Coordenadas Reais de Muriaé
 
 export const LINHAS = [
   {
@@ -12,6 +12,8 @@ export const LINHAS = [
     passageiros: 23,
     motorista: "João Pereira",
     trocaMotorista: "14:00",
+    coordenadasInicio: [-21.1306, -42.3664], // Centro (Terminal)
+    coordenadasFim: [-21.1121, -42.3458],    // Hospital Regional (Próximo à Fundação Cristiano Varella)
     paradas: ["Terminal Central", "Praça Antônio Carlos", "Rua XV de Novembro", "Shopping Muriaé", "UPA Muriaé", "Hospital Regional"],
     horarios: ["05:30","06:00","06:30","07:00","07:30","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","17:30","18:00","18:30","19:00","20:00","21:00","22:00"],
     horariosFimDeSemana: ["06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"],
@@ -21,7 +23,7 @@ export const LINHAS = [
   {
     id: "002",
     numero: "002",
-    nome: "Bairro São Paulo → Terminal",
+    nome: "Bairro São Pedro → Terminal",
     cor: "#0ea5e9",
     status: "ativa",
     tempo_espera: "12 min",
@@ -29,7 +31,9 @@ export const LINHAS = [
     passageiros: 41,
     motorista: "Carlos Mendes",
     trocaMotorista: "15:30",
-    paradas: ["Bairro São Paulo", "Av. Expedicionário", "Mercado Municipal", "Praça Central", "Terminal Central"],
+    coordenadasInicio: [-21.1442, -42.3785], // Bairro São Pedro
+    coordenadasFim: [-21.1306, -42.3664],    // Terminal Central
+    paradas: ["Bairro São Pedro", "Av. Expedicionário", "Mercado Municipal", "Praça Central", "Terminal Central"],
     horarios: ["05:45","06:15","07:00","07:30","08:00","09:30","11:00","13:00","15:00","17:00","18:30","20:00","22:00"],
     horariosFimDeSemana: ["06:30","08:00","09:30","11:00","13:00","15:00","17:00","19:00","21:00"],
     frequencia: "45 min",
@@ -46,6 +50,8 @@ export const LINHAS = [
     passageiros: 9,
     motorista: "Ana Beatriz",
     trocaMotorista: "12:00",
+    coordenadasInicio: [-21.1180, -42.3550], // Barra / Próximo Industrial
+    coordenadasFim: [-21.1550, -42.3610],    // Sentido Saída para o IF / Campus
     paradas: ["Laranjal", "Bairro Industrial", "SENAI", "BR-116", "UFJF Campus Muriaé"],
     horarios: ["06:00","07:00","08:00","12:00","13:00","17:30","18:30","22:00"],
     horariosFimDeSemana: ["08:00","10:00","13:00","17:00","20:00"],
@@ -63,6 +69,8 @@ export const LINHAS = [
     passageiros: 18,
     motorista: "Roberto Lima",
     trocaMotorista: "16:00",
+    coordenadasInicio: [-21.1278, -42.3812], // Santa Terezinha
+    coordenadasFim: [-21.1315, -42.3645],    // Centro
     paradas: ["Santa Terezinha", "Vila Nova", "Av. Presidente Vargas", "Rua Frei Rosário", "Centro"],
     horarios: ["05:30","06:30","07:30","09:00","11:00","13:00","15:00","17:00","19:00","21:00"],
     horariosFimDeSemana: [],
@@ -81,6 +89,8 @@ export const LINHAS = [
     passageiros: 0,
     motorista: null,
     trocaMotorista: null,
+    coordenadasInicio: [-21.1095, -42.3890], // Aeroporto de Muriaé
+    coordenadasFim: [-21.1306, -42.3664],    // Terminal Central
     paradas: ["Aeroporto Reg. Muriaé", "BR-116 Norte", "Bairro Aeroporto", "Terminal Central"],
     horarios: ["06:00","10:00","14:00","18:00","22:00"],
     horariosFimDeSemana: [],
@@ -100,6 +110,6 @@ export const MOTORISTAS_APROVADOS = [
 
 export const NOTIFICACOES = [
   { id: "n1", tipo: "atraso", linha: "004", mensagem: "Linha 004 com atraso de ~20 min.", motivo: "Trânsito intenso", time: "há 5 min", lida: false },
-  { id: "n2", tipo: "info", linha: "001", mensagem: "Linha 001 operando normalmente.", motivo: null, time: "há 12 min", lida: false },
+  { id: "n2", tipo: "info", inline: "001", mensagem: "Linha 001 operando normalmente.", motivo: null, time: "há 12 min", lida: false },
   { id: "n3", tipo: "atraso", linha: "002", mensagem: "Linha 002 — lotação alta.", motivo: "Pico de horário", time: "há 30 min", lida: true },
 ];

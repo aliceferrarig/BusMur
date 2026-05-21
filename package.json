@@ -12,6 +12,7 @@
   "dependencies": {
     "@capacitor/android": "^8.3.4",
     "@capacitor/core": "^8.3.4",
+    "@react-google-maps/api": "^2.20.8",
     "@supabase/supabase-js": "^2.101.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.16.0",
@@ -20,6 +21,7 @@
     "react-hot-toast": "^2.6.0",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.13.1",
+    "socket.io-client": "^4.8.3",
     "sweetalert2": "^11.26.22"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { LINHAS } from "../lib/mockData";
 import Badge from "../components/Badge";
-import MapView from "../components/MapView";
+import Mapa from "./Mapa"; // Importa o componente real do mapa do OSRM que criamos
 
 const Ic = {
   clock: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -36,6 +36,16 @@ export default function LinhaDetalhe() {
     })
     .filter((h) => h.diff > 0)
     .slice(0, 4);
+
+  // PREPARAÇÃO DO OBJETO DA ROTA: Extrai os dados do seu banco simulado (mockData)
+  // Certifique-se que o seu mockData possui as propriedades coordenadasInicio e coordenadasFim cadastrados!
+  // Caso não tenha, ele assume as coordenadas padrão da Barra x Centro de Muriaé.
+  const dadosDaRotaParaOMapa = {
+    idLinha: linha.id,
+    nome: linha.nome,
+    inicio: linha.coordenadasInicio || [-21.1165, -42.3552], 
+    fim: linha.coordenadasFim || [-21.1315, -42.3645],     
+  };
 
   return (
     <div>
@@ -149,11 +159,12 @@ export default function LinhaDetalhe() {
         </div>
       )}
       
+      {/* MAPA INTEGRADO: Renderiza o componente real recebendo as informações dinâmicas da linha ativa */}
       {tab === "mapa" && (
         <div className="card overflow-hidden rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm" style={{ height: "420px" }}>
-          <MapView selectedLinha={linha.numero}/>
+          <Mapa rotaSelecionada={dadosDaRotaParaOMapa} />
         </div>
       )}
     </div>
   );
-D}
+}

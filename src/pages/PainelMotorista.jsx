@@ -1,34 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { LINHAS } from "../lib/mockData";
 import { useAuth } from "../contexts/AuthContext";
-import MapView from "../components/MapView";
-
-// Coordenadas reais aproximadas das paradas em Muriaé
-const PARADAS_COORDS = {
-  "Terminal Central": [-21.1345, -42.3690],
-  "Praça Antônio Carlos": [-21.1330, -42.3710],
-  "Rua XV de Novembro": [-21.1320, -42.3730],
-  "Shopping Muriaé": [-21.1310, -42.3750],
-  "UPA Muriaé": [-21.1300, -42.3770],
-  "Hospital Regional": [-21.1400, -42.3770],
-  "Bairro São Paulo": [-21.1280, -42.3580],
-  "Av. Expedicionário": [-21.1290, -42.3610],
-  "Mercado Municipal": [-21.1310, -42.3640],
-  "Praça Central": [-21.1330, -42.3670],
-  "Laranjal": [-21.1200, -42.3800],
-  "Bairro Industrial": [-21.1240, -42.3750],
-  "SENAI": [-21.1270, -42.3700],
-  "BR-116": [-21.1300, -42.3650],
-  "UFJF Campus Muriaé": [-21.1280, -42.3620],
-  "Santa Terezinha": [-21.1380, -42.3600],
-  "Vila Nova": [-21.1360, -42.3630],
-  "Av. Presidente Vargas": [-21.1340, -42.3650],
-  "Rua Frei Rosário": [-21.1350, -42.3670],
-  "Centro": [-21.1340, -42.3680],
-  "Aeroporto Reg. Muriaé": [-21.1250, -42.3900],
-  "BR-116 Norte": [-21.1280, -42.3850],
-  "Bairro Aeroporto": [-21.1300, -42.3820],
-};
+import Mapa from "./Mapa"; // Substitui o MapView simulado pelo componente de GPS Real
 
 export default function PainelMotorista() {
   const { user } = useAuth();
@@ -41,17 +14,13 @@ export default function PainelMotorista() {
   const linhasDisponiveis = LINHAS.filter((l) => l.status !== "inativa");
   const linhaAtual = LINHAS.find((l) => l.numero === linhaSelecionada);
 
-  // Coordenadas das paradas da linha selecionada
-  const paradasCoords = linhaAtual
-    ? linhaAtual.paradas
-        .filter((p) => PARADAS_COORDS[p])
-        .map((p) => ({ nome: p, coord: PARADAS_COORDS[p] }))
-    : [];
-
-  // Centro do mapa baseado na linha selecionada
-  const centroMapa = paradasCoords.length > 0
-    ? paradasCoords[Math.floor(paradasCoords.length / 2)].coord
-    : [-21.13, -42.366];
+  // Prepara o objeto estruturado que o componente do OSRM/GPS precisa ler
+  const dadosDaRotaParaOMapa = linhaAtual ? {
+    idLinha: linhaAtual.id,
+    nome: linhaAtual.nome,
+    inicio: linhaAtual.coordenadasInicio || [-21.1306, -42.3664], 
+    fim: linhaAtual.coordenadasFim || [-21.1121, -42.3458],     
+  } : null;
 
   const iniciarRota = () => {
     if (!linhaSelecionada) return;
@@ -143,7 +112,7 @@ export default function PainelMotorista() {
             <div className="space-y-4">
               <div>
                 <label className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2 block">Selecionar linha</label>
-                <select className="input-field" value={linhaSelecionada} onChange={(e) => setLinhaSelecionada(e.target.value)}>
+                <select className="input-field shadow-sm" value={linhaSelecionada} onChange={(e) => setLinhaSelecionada(e.target.value)}>
                   <option value="">-- Selecione a linha --</option>
                   {linhasDisponiveis.map((l) => (
                     <option key={l.id} value={l.numero}>Linha {l.numero} — {l.nome}</option>
@@ -160,7 +129,7 @@ export default function PainelMotorista() {
               )}
 
               <button onClick={iniciarRota} disabled={!linhaSelecionada}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white transition-all disabled:opacity-50"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white transition-all disabled:opacity-50 shadow-md"
                 style={{ background: linhaSelecionada ? "linear-gradient(135deg, #059669, #10b981)" : undefined }}>
                 ▶ Iniciar rota
               </button>
@@ -171,7 +140,7 @@ export default function PainelMotorista() {
                 <p className="text-xs font-bold text-emerald-700 dark:text-emerald-400 mb-1">Rota em andamento</p>
                 <p className="text-sm font-bold text-gray-800 dark:text-white">Linha {linhaSelecionada}</p>
               </div>
-              <button onClick={pararRota} className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white bg-red-500 hover:bg-red-600 transition-all">
+              <button onClick={pararRota} className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-bold text-white bg-red-500 hover:bg-red-600 transition-all shadow-md">
                 ⏹ Parar rota
               </button>
             </div>
@@ -179,16 +148,15 @@ export default function PainelMotorista() {
         </div>
       </div>
 
-      {/* MAPA COM ROTA DESTACADA */}
+      {/* MAPA COM GPS REAL CONECTADO */}
       <div>
         <h2 className="text-sm font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wide mb-4">
           {linhaSelecionada ? `Mapa — Linha ${linhaSelecionada}` : "Mapa da rota"}
         </h2>
-        <div className="card overflow-hidden rounded-2xl" style={{ height: "450px" }}>
-          <MapView 
-            selectedLinha={linhaSelecionada || null} 
-            centro={centroMapa}
-            paradas={paradasCoords}
+        <div className="card overflow-hidden rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800" style={{ height: "450px" }}>
+          <Mapa 
+            rotaSelecionada={dadosDaRotaParaOMapa} 
+            ehMotorista={compartilhando} // Liga/desliga o rastreador de satélite baseado no botão
           />
         </div>
       </div>
