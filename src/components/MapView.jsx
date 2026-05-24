@@ -18,30 +18,25 @@ function AjustarCamera({ coordenadas }) {
   return null;
 }
 
-export default function MapView({ selectedLinha = null, isDriverMode = false, currentDriverBusId = 1 }) {
+export default function MapView({ rotaSelecionada = null, ehMotorista  = false, currentDriverBusId = 1 }) {
   const { theme } = useTheme();
   const [rotaCoordenadas, setRotaCoordenadas] = useState([]);
   const [loadingRota, setLoadingRota] = useState(false);
   
-  const buses = useBusTracking(isDriverMode, currentDriverBusId);
-  const filteredBuses = selectedLinha ? buses.filter(b => b.linha === selectedLinha) : buses;
+  const buses = useBusTracking(ehMotorista , currentDriverBusId);
+  const filteredBuses = rotaSelecionada ? buses.filter(b => b.linha === rotaSelecionada?.idLinha) : buses;
 
   const centroMuriaePadrao = [-21.1300, -42.3660];
 
   useEffect(() => {
-    if (!selectedLinha || !LINHAS_CONFIG[selectedLinha]) {
-      setRotaCoordenadas([]);
-      return;
-    }
-
-    const linhaInfo = LINHAS_CONFIG[selectedLinha];
+    if (!rotaSelecionada) { setRotaCoordenadas([]); return; }
     setLoadingRota(true);
 
-    obterRotaAutomatica(linhaInfo.origem, linhaInfo.destino).then((coordenadas) => {
+    obterRotaAutomatica(rotaSelecionada.inicio, rotaSelecionada.fim).then((coordenadas) => {
       setRotaCoordenadas(coordenadas);
       setLoadingRota(false);
     });
-  }, [selectedLinha]);
+  }, [rotaSelecionada]);
 
   const tileUrl = theme === "dark"
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -64,7 +59,7 @@ export default function MapView({ selectedLinha = null, isDriverMode = false, cu
         {rotaCoordenadas.length > 0 && (
           <Polyline 
             positions={rotaCoordenadas} 
-            color={LINHAS_CONFIG[selectedLinha]?.cor || "#1d4ed8"} 
+            color={LINHAS_CONFIG[rotaSelecionada?.idLinha]?.cor || "#1d4ed8"}
             weight={6}
             opacity={0.85}
           />
@@ -83,7 +78,7 @@ export default function MapView({ selectedLinha = null, isDriverMode = false, cu
           >
             <Popup>
               <div className="p-1">
-                <p className="font-bold">Linha {bus.linha} - {LINHAS_CONFIG[bus.linha]?.nome}</p>
+                <p className="font-bold">Linha {bus.linha} - {LINHAS_CONFIG[bus.linha]?.nome ?? `Linha ${bus.linha}`}</p>
                 <p className="text-xs">Motorista: {bus.name}</p>
                 <p className="text-xs font-semibold text-green-600">Status: {bus.status}</p>
               </div>

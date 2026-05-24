@@ -156,7 +156,7 @@ export default function PainelMotorista() {
         <div className="card overflow-hidden rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800" style={{ height: "450px" }}>
           <Mapa 
             rotaSelecionada={dadosDaRotaParaOMapa} 
-            ehMotorista={compartilhando} // Liga/desliga o rastreador de satélite baseado no botão
+            ehMotorista ={compartilhando} // Liga/desliga o rastreador de satélite baseado no botão
           />
         </div>
       </div>
