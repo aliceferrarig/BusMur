@@ -1,4 +1,4 @@
-import { PARADAS, LINHAS_CONFIG } from "./routeData";
+import { PARADAS, LINHAS_CONFIG } from "../utils/routeData";
 
 // Busca o caminho real pelas ruas entre dois pontos
 async function buscarSegmento(de, para) {
