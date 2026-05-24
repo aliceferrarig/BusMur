@@ -33,6 +33,11 @@ export default function MapView({ rotaSelecionada = null, ehMotorista  = false, 
     setLoadingRota(true);
 
     obterRotaAutomatica(rotaSelecionada.inicio, rotaSelecionada.fim).then((coordenadas) => {
+      console.log("🗺️ Rota calculada para:", rotaSelecionada.nome);
+      console.log("📍 Início:", rotaSelecionada.inicio);
+      console.log("📍 Fim:", rotaSelecionada.fim);
+      console.log(`📌 Total de pontos: ${coordenadas.length}`);
+      console.log("📐 Coordenadas completas:", coordenadas);
       setRotaCoordenadas(coordenadas);
       setLoadingRota(false);
     });
