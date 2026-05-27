@@ -2,101 +2,482 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════
+   BUSMUR — Sistema de Design v2
+   Inspirado na abordagem do Pétala Rara:
+   dark mode com tinte de cor, superfícies com profundidade,
+   ativos com rgba (não sólido), transições suaves
+   ══════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+
+/* ── MODO CLARO ─────────────────────────────────────────────── */
 :root {
-  --primary: #1d4ed8;
-  --primary-light: #3b82f6;
-  --primary-hover: #1e40af;
-  --accent: #0ea5e9;
-  --success: #059669;
-  --warning: #d97706;
-  --danger: #dc2626;
+  /* Marca */
+  --brand:        #004c68;
+  --brand-hover:  #003a52;
+  --brand-pale:   #e6f3f8;
+  --brand-mid:    #b3d9e8;
+
+  /* Destaque */
+  --accent:       #ffe500;
+  --accent-hover: #f5da00;
+  --accent-on:    #002c3e;
+
+  /* Semântica */
+  --success:      #15803d;
+  --success-pale: #f0fdf4;
+  --warning:      #b45309;
+  --warning-pale: #fffbeb;
+  --danger:       #b91c1c;
+  --danger-pale:  #fef2f2;
+  --purple:       #7c3aed;
+  --purple-pale:  #f5f3ff;
+
+  /* Superfícies — com tinte levemente azul-acinzentado */
+  --bg:           #ffffff;
+  --bg-soft:      #f4f8fb;     /* fundo geral da app */
+  --bg-muted:     #eaf2f7;     /* hover, inputs desabilitados */
+  --bg-raised:    #ffffff;     /* cards elevados */
+
+  /* Texto */
+  --text:         #0a1e2c;
+  --text-sub:     #2e4f63;
+  --text-muted:   #5e7f93;
+  --text-faint:   #93b4c4;
+
+  /* Bordas */
+  --border:       #d9e8f0;
+  --border-strong:#b3d0e0;
+
+  /* Sombras */
+  --shadow-xs: 0 1px 2px rgba(0,76,104,0.05);
+  --shadow-sm: 0 2px 8px rgba(0,76,104,0.07);
+  --shadow-md: 0 6px 20px rgba(0,76,104,0.10);
+  --shadow-lg: 0 16px 48px rgba(0,76,104,0.13);
+
+  /* Forma */
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* Tipografia */
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
 }
+
+/* ── MODO ESCURO — mesmo princípio do Pétala Rara:
+   backgrounds com tinte de cor (azul-petróleo profundo),
+   não cinza neutro. Superfícies com profundidade real.
+   ────────────────────────────────────────────────────────── */
+html.dark {
+  /* Superfícies: preto puro / AMOLED */
+  --bg:           #111111;     /* sidebar, overlays */
+  --bg-soft:      #0a0a0a;     /* fundo principal da app */
+  --bg-muted:     #222222;     /* inputs, section hover */
+  --bg-raised:    #1a1a1a;     /* cards — um tom acima do fundo */
+
+  /* Texto: brancos neutros */
+  --text:         #f0f0f0;
+  --text-sub:     #a0a0a0;
+  --text-muted:   #606060;
+  --text-faint:   #383838;
+
+  /* Bordas: sutis, neutras */
+  --border:       #2a2a2a;
+  --border-strong:#3a3a3a;
+
+  /* Marca: teal claro para contrastar no preto */
+  --brand:        #35b8e0;
+  --brand-hover:  #28a5cc;
+  --brand-pale:   rgba(53,184,224,0.10);
+  --brand-mid:    rgba(53,184,224,0.20);
+
+  /* Semântica adaptada */
+  --success:      #4ade80;
+  --success-pale: rgba(74,222,128,0.10);
+  --warning:      #fbbf24;
+  --warning-pale: rgba(251,191,36,0.10);
+  --danger:       #f87171;
+  --danger-pale:  rgba(248,113,113,0.10);
+  --purple:       #a78bfa;
+  --purple-pale:  rgba(167,139,250,0.10);
+
+  /* Sombras */
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.40);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.55);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.65);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.80);
+}
+
+/* ── BASE ────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root { height: 100%; }
 
 body {
-  font-family: "DM Sans", sans-serif;
-  @apply bg-gray-50 text-gray-800 antialiased;
+  font-family: var(--font-body);
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.3s, color 0.3s;
 }
 
-html.dark body {
-  @apply bg-[#080c14] text-gray-100;
-}
+input, textarea, select, button { font-family: inherit; }
+button { cursor: pointer; border: none; outline: none; }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-light) transparent;
-}
-*::-webkit-scrollbar { width: 5px; }
-*::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 999px; }
+/* ── SCROLLBAR ───────────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+*::-webkit-scrollbar { width: 5px; height: 5px; }
+*::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 99px; }
+*::-webkit-scrollbar-track { background: transparent; }
 
-.mono { font-family: "Space Mono", monospace; }
+/* ── MONO ────────────────────────────────────────────────────── */
+.mono { font-family: var(--font-mono); }
 
-.glass {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-.dark .glass {
-  background: rgba(10, 20, 40, 0.65);
-  border-color: rgba(255, 255, 255, 0.06);
-}
+/* ══════════════════════════════════════════════════════════════
+   COMPONENTES
+   ══════════════════════════════════════════════════════════════ */
 
+/* ── CARD ────────────────────────────────────────────────────── */
 .card {
-  @apply bg-white dark:bg-[#0f1827] rounded-2xl border border-gray-100 dark:border-gray-800/60 shadow-sm;
-}
-
-.card-hover {
-  @apply transition-all duration-200;
+  background: var(--bg-raised);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s, transform 0.2s, border-color 0.2s;
 }
 .card-hover:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.08), 0 4px 6px -4px rgb(59 130 246 / 0.08);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
 }
 
-.gradient-primary {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-}
-
+/* ── BOTÕES ──────────────────────────────────────────────────── */
 .btn-primary {
-  @apply flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white text-sm transition-all;
-  background: var(--primary);
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 11px 22px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 700; letter-spacing: 0.01em;
+  background: var(--brand); color: #fff;
+  border: none; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s ease;
 }
-.btn-primary:hover {
-  background: var(--primary-hover);
+.btn-primary:hover:not(:disabled) {
+  background: var(--brand-hover);
   transform: translateY(-1px);
-  box-shadow: 0 10px 15px -3px rgb(59 130 246 / 0.25);
+  box-shadow: 0 6px 20px rgba(0,76,104,0.30);
 }
+html.dark .btn-primary:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(53,184,224,0.25);
+}
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-accent {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 11px 22px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 800; letter-spacing: 0.01em;
+  background: var(--accent); color: var(--accent-on);
+  border: none; cursor: pointer; white-space: nowrap;
+  transition: all 0.2s ease;
+}
+.btn-accent:hover:not(:disabled) {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255,229,0,0.40);
+}
+.btn-accent:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .btn-secondary {
-  @apply flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 20px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 600;
+  background: var(--bg-raised); color: var(--text-sub);
+  border: 1.5px solid var(--border); cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+  background: var(--bg-muted);
+  border-color: var(--brand-mid);
+  color: var(--brand);
 }
 
-.input-field {
-  @apply w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800/60 text-gray-800 dark:text-gray-100 text-sm outline-none transition-all;
-  font-family: "DM Sans", sans-serif;
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 12px; border-radius: var(--radius);
+  font-size: 13px; font-weight: 600;
+  color: var(--text-muted); background: transparent; border: none; cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-ghost:hover {
+  background: var(--bg-muted);
+  color: var(--brand);
+}
+
+.btn-danger {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 8px 14px; border-radius: var(--radius);
+  font-size: 13px; font-weight: 700;
+  color: var(--danger); background: transparent; border: none; cursor: pointer;
+  transition: all 0.18s;
+}
+.btn-danger:hover { background: var(--danger-pale); }
+
+.btn-sm { padding: 7px 14px !important; font-size: 13px !important; }
+
+/* ── INPUTS ──────────────────────────────────────────────────── */
+input, textarea, select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+input::placeholder, textarea::placeholder { color: var(--text-faint); }
+input:focus, textarea:focus, select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-pale);
+}
+html.dark input, html.dark textarea, html.dark select {
+  background: var(--bg-muted);
+  color: var(--text);
+  border-color: var(--border);
+}
+html.dark input:focus, html.dark textarea:focus, html.dark select:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-pale);
+}
+.input-field { /* alias semântico */
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 .input-field:focus {
-  @apply border-blue-400 dark:border-blue-500;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px var(--brand-pale);
 }
 
+/* ── BADGES ──────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge-brand   { background: var(--brand-pale);   color: var(--brand);   }
+.badge-accent  { background: var(--accent);        color: var(--accent-on); }
+.badge-success { background: var(--success-pale);  color: var(--success); }
+.badge-warning { background: var(--warning-pale);  color: var(--warning); }
+.badge-danger  { background: var(--danger-pale);   color: var(--danger);  }
+.badge-purple  { background: var(--purple-pale);   color: var(--purple);  }
+.badge-muted   { background: var(--bg-muted);      color: var(--text-muted); border: 1px solid var(--border); }
+
+/* ── SIDEBAR — lógica Pétala Rara para dark mode ─────────────── */
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 13px; border-radius: 10px;
+  font-size: 14px; font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none; cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+/* Hover: fundo levemente tintado com a cor da marca */
+.sidebar-item:hover {
+  background: var(--brand-pale);
+  color: var(--brand);
+}
+/* Ativo light: amarelo sólido como destaque */
+.sidebar-item.active {
+  background: var(--accent);
+  color: var(--accent-on);
+  font-weight: 700;
+}
+/* Hover dark: rgba transparente, não cor sólida — como Pétala Rara */
+html.dark .sidebar-item:hover {
+  background: var(--brand-pale); /* já é rgba no dark */
+  color: var(--brand);
+}
+/* Ativo dark: NÃO sólido — tinte transparente do accent + texto amarelo */
+html.dark .sidebar-item.active {
+  background: rgba(255, 229, 0, 0.12);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── CHIP (filtros) ──────────────────────────────────────────── */
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 14px; border-radius: 999px; font-size: 13px;
+  cursor: pointer; font-weight: 500;
+  border: 1.5px solid var(--border); color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s;
+}
+.chip.active {
+  background: var(--brand); border-color: var(--brand); color: #fff;
+}
+.chip:not(.active):hover {
+  border-color: var(--brand-mid); color: var(--brand);
+}
+html.dark .chip.active {
+  background: rgba(53,184,224,0.15);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+/* ── PAGE HEADER ─────────────────────────────────────────────── */
+.page-header { margin-bottom: 28px; }
+.page-header h1 {
+  font-size: 23px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.4px; line-height: 1.25;
+}
+.page-header p { font-size: 14px; color: var(--text-muted); margin-top: 4px; }
+
+/* ── STAT CARD ───────────────────────────────────────────────── */
+.stat-card {
+  padding: 22px 24px; position: relative; overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+/* Decoração circular no canto — sutil */
+.stat-card::before {
+  content: ''; position: absolute; top: -20px; right: -20px;
+  width: 80px; height: 80px; border-radius: 50%;
+  opacity: 0.06; background: var(--brand);
+}
+
+/* ── MODAL ───────────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0, 20, 35, 0.50);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.2s ease; padding: 16px;
+}
+html.dark .modal-overlay {
+  background: rgba(0, 0, 0, 0.70);
+}
+.modal {
+  background: var(--bg-raised); border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl); padding: 32px;
+  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg); animation: slideUp 0.25s ease;
+}
+
+/* ── TABELAS ─────────────────────────────────────────────────── */
+table { width: 100%; border-collapse: collapse; }
+th {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted);
+  padding: 10px 16px; text-align: left;
+  border-bottom: 1.5px solid var(--border);
+}
+td {
+  padding: 13px 16px; font-size: 14px;
+  border-bottom: 1px solid var(--border); vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg-soft); }
+
+/* ── FORMS ───────────────────────────────────────────────────── */
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
+.form-group label { font-size: 13px; font-weight: 600; color: var(--text-sub); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ── MAPA / GRID BG ──────────────────────────────────────────── */
 .map-bg {
-  background-color: #e8f0fe;
+  background-color: var(--brand-pale);
   background-image:
-    linear-gradient(rgba(100,150,255,0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,150,255,0.08) 1px, transparent 1px);
+    linear-gradient(rgba(0,76,104,0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,76,104,0.07) 1px, transparent 1px);
   background-size: 40px 40px;
 }
-.dark .map-bg {
-  background-color: #0b1629;
+html.dark .map-bg {
+  background-color: #0a0a0a;
   background-image:
-    linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
 }
 
-/* ─── RESPONSIVO ─── */
+/* ── GLASS ───────────────────────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(255,255,255,0.55);
+}
+html.dark .glass {
+  background: rgba(8,20,30,0.80);
+  border-color: rgba(255,255,255,0.06);
+}
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast-container {
+  position: fixed; bottom: 24px; right: 24px;
+  z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+}
+.toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px; border-radius: 12px; font-size: 14px; font-weight: 500;
+  box-shadow: var(--shadow-md); min-width: 280px;
+  background: var(--bg-raised); color: var(--text);
+  border: 1.5px solid var(--border);
+  animation: toastIn 0.3s ease forwards;
+}
+.toast.out { animation: toastOut 0.3s ease forwards; }
+.toast-success { border-left: 4px solid var(--success); }
+.toast-error   { border-left: 4px solid var(--danger);  }
+.toast-warning { border-left: 4px solid var(--warning); }
+.toast-info    { border-left: 4px solid var(--brand);   }
+
+/* ── ANIMAÇÕES ───────────────────────────────────────────────── */
+@keyframes fadeIn   { from{opacity:0} to{opacity:1} }
+@keyframes slideUp  { from{opacity:0;transform:translateY(16px) scale(0.98)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes fadeInUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes toastIn  { from{opacity:0;transform:translateY(20px) scale(.95)} to{opacity:1;transform:translateY(0) scale(1)} }
+@keyframes toastOut { from{opacity:1;transform:translateY(0) scale(1)} to{opacity:0;transform:translateY(10px) scale(.95)} }
+@keyframes spin     { to{transform:rotate(360deg)} }
+@keyframes pulse    { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+
+.fade-in     { animation: fadeIn    0.3s ease forwards; }
+.fade-in-up  { animation: fadeInUp  0.35s ease forwards; }
+.animate-spin { animation: spin 0.75s linear infinite; }
+
+/* ── PROGRESSO ───────────────────────────────────────────────── */
+.progress-bar  { height: 6px; background: var(--bg-muted); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+
+/* ── RECHARTS dark ───────────────────────────────────────────── */
+html.dark .recharts-cartesian-grid-horizontal line,
+html.dark .recharts-cartesian-grid-vertical line { stroke: var(--border) !important; }
+html.dark .recharts-text { fill: var(--text-muted) !important; }
+html.dark .recharts-default-tooltip {
+  background: var(--bg-raised) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 10px !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* ── RESPONSIVO ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .card { @apply rounded-xl; }
-  .input-field { @apply py-3 text-base; }
-  .btn-primary, .btn-secondary { @apply py-3 px-4 text-sm; }
+  input, textarea, select, .input-field { font-size: 16px; padding: 13px 16px; }
+  .btn-primary, .btn-accent, .btn-secondary { padding: 13px 18px; }
+  .modal { padding: 24px 20px; }
+  .card { border-radius: var(--radius); }
 }
